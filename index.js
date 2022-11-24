@@ -50,7 +50,7 @@ const MAX_MINUTES_TO_WAIT = 60;
           await driver.findElement(By.id("email")).sendKeys(email);
           await driver.findElement(By.id("name")).sendKeys(name);
           await driver.findElement(By.id("phone")).sendKeys(phone);
-          //   await driver.findElement(By.id("submit-btn")).click();
+          await driver.findElement(By.id("submit-btn")).click();
           console.log(`Termin zakazan u ${timeslot}`);
         } else {
           console.log("Svi izabrani termini su zauzeti");
