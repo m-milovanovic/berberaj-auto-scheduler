@@ -2,6 +2,7 @@ This is a selenium script used to automatically schedule a haircut at [berberaj.
 
 ### Requirements
 - Latest Chrome browser
+- Node.js
 
 ### Installation:
 
