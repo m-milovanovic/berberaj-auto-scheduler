@@ -25,6 +25,14 @@ const BARBERSHOP_URL = `https://berberaj.rs/${LOCATION}`;
 
 let employees = {};
 
+const errorMessages = {
+    NoSuchElementError: 'Timeslot is not found or not available!',
+    StaleElementReferenceError: 'Element is not attached to the page document',
+    ElementClickInterceptedError: 'Element is not clickable at point',
+    ElementNotInteractableError: 'Element is not interactable',
+    TimeoutError: 'Element is not found',
+};
+
 const getEmployees = async (driver) => {
     let employees = {};
 
@@ -42,7 +50,7 @@ const getEmployees = async (driver) => {
             return employees;
         }
     } catch (error) {
-        console.log('Unable to find employee names');
+        console.error('Unable to find employee names');
     }
 };
 
@@ -98,8 +106,10 @@ const bookAppointment = async (driver) => {
                 );
                 await driver.findElement(By.id('submit-btn')).click();
 
-
-                const alertElement = await driver.wait(until.elementLocated(By.className('alert')), 5000);
+                const alertElement = await driver.wait(
+                    until.elementLocated(By.className('alert')),
+                    5000
+                );
 
                 const alertText = await alertElement.getAttribute('innerHTML');
                 console.log('Booking response: ' + alertText);
@@ -107,34 +117,18 @@ const bookAppointment = async (driver) => {
                 const alertAttribute = (
                     await alertElement.getAttribute('class')
                 ).split(' ');
-                if (alertAttribute.includes('alert-success')) {
+                if (
+                    alertAttribute.includes('alert-success') ||
+                    alertAttribute.includes('alert-warning')
+                ) {
                     console.log('Appointment booked successfully');
                     break;
-                } else {
-                    console.log('Appointment booking failed');
-                    timeslot = null;
                 }
+                console.log('Appointment booking failed');
+                timeslot = null;
             } catch (err) {
                 timeslot = null;
-                switch (err.name) {
-                    case 'NoSuchElementError':
-                        console.log('Timeslot is not found or not available!');
-                        break;
-                    case 'StaleElementReferenceError':
-                        console.log('Element is not attached to the page document');
-                        break;
-                    case 'ElementClickInterceptedError':
-                        console.log('Element is not clickable at point');
-                        break;
-                    case 'ElementNotInteractableError':
-                        console.log('Element is not interactable');
-                        break;
-                    case 'TimeoutError':
-                        console.log('Element is not found');
-                        break;
-                    default:
-                        console.log(err);
-                }
+                console.error(errorMessages[err.name] ?? err);
             } finally {
                 try {
                     await driver.findElement(By.className('close-btn')).click();
@@ -168,8 +162,8 @@ const acceptCookies = async (driver) => {
         await driver.findElement(By.id('closes-cookie-info')).click();
         console.log('Accepted cookies');
     } catch (error) {
-        console.log(error);
         console.log('Unable to find accept cookies button');
+        console.error(error);
     }
 };
 
@@ -179,10 +173,9 @@ const acceptCookies = async (driver) => {
     employees = await getEmployees(driver);
 
     barber.name = barber.name.toUpperCase();
-    console.log(barber.name);
-
     let currentHour = new Date().getHours();
-    await acceptCookies(driver); // Add await here to ensure sleep is completed before continuing
+
+    await acceptCookies(driver);
 
     if (currentHour < 9 || currentHour > 20) {
         schedule.scheduleJob('9 * * *', async () => {
