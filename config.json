@@ -1,0 +1,15 @@
+{
+    "user": {
+        "name": "Pera Peric",
+        "email": "pera.peric@gmail.com",
+        "phone": "0601234567"
+    },
+
+    "barberName": "Dragoljub",
+    "berberajLocation": "centar",
+
+    "timeSlots": ["16:00", "15:30", "15:00"],
+
+    "browser": "chrome",
+    "maxMinutesToWait": 60
+}

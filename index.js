@@ -2,23 +2,24 @@ const { Builder, By } = require('selenium-webdriver');
 require('chromedriver');
 
 const schedule = require('node-schedule');
+const config = require('./config.json');
 
 const barber = {
-    name: 'Dragoljub',
+    name: config.barberName,
     id: '13', // fallback if name is not found
 };
 
 const user = {
-    email: 'your-email@gmail.com',
-    name: 'Your Name',
-    phone: 'Your Number',
+    email: config.user.email,
+    name: config.user.name,
+    phone: config.user.phone,
 };
 
-const timeslots = ['16:00', '16:30', '15:30'];
+const timeslots = config.timeSlots;
 
-const MAX_MINUTES_TO_WAIT = 60;
+const MAX_MINUTES_TO_WAIT = config.maxMinutesToWait;
 
-const LOCATION = 'centar';
+const LOCATION = config.berberajLocation;
 
 let employees = {};
 
@@ -90,7 +91,7 @@ const bookAppointment = async (driver) => {
 };
 
 (async () => {
-    const driver = await new Builder().forBrowser('chrome').build();
+    const driver = await new Builder().forBrowser(config.browser).build();
     await driver.get(`https://berberaj.rs/${LOCATION}`);
     employees = await getEmployees(driver);
 
@@ -101,7 +102,6 @@ const bookAppointment = async (driver) => {
 
     if (currentHour < 9 || currentHour > 20) {
         schedule.scheduleJob('9 * * *', async () => {
-            console.log('hello njorld');
             await bookAppointment(driver);
         });
         console.log('Scheduled job for 9am');
