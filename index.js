@@ -143,7 +143,6 @@ const bookAppointment = async (driver) => {
             }
         }
         if (timeslot) {
-            console.log('imaga');
             break;
         }
     }
