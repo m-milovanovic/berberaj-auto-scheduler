@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "chromedriver": "latest",
+    "node-schedule": "^2.1.1",
     "selenium-webdriver": "^4.0.0-rc-2"
   },
   "name": "berberaj",
