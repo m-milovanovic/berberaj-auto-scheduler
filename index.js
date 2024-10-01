@@ -122,6 +122,7 @@ const bookAppointment = async (driver) => {
                     alertAttribute.includes('alert-warning')
                 ) {
                     console.log('Appointment booked successfully');
+                    await driver.quit();
                     break;
                 }
                 console.log('Appointment booking failed');
