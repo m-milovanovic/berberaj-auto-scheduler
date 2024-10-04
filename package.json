@@ -1,13 +1,13 @@
 {
   "dependencies": {
     "chromedriver": "latest",
+    "node-schedule": "^2.1.1",
     "selenium-webdriver": "^4.0.0-rc-2"
   },
   "name": "berberaj",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
   "keywords": [],
