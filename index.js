@@ -123,6 +123,7 @@ const bookAppointment = async (driver) => {
                 ) {
                     console.log('Appointment booked successfully');
                     await driver.quit();
+                    process.exit();
                     break;
                 }
                 console.log('Appointment booking failed');
